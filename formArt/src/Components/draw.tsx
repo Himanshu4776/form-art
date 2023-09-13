@@ -1,8 +1,13 @@
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs";
+import { useDraw } from "../hooks/useDraw";
 
 export function Draw() {
   const generator = rough.generator();
+
+  const { locationRef } = useDraw();
+
+  console.log(locationRef.current);
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -13,7 +18,12 @@ export function Draw() {
   });
 
   return (
-    <canvas id="canvas" width={window.innerWidth} height={window.innerHeight}>
+    <canvas
+      id="canvas"
+      ref={locationRef}
+      width={window.innerWidth}
+      height={window.innerHeight}
+    >
       Canvas API
     </canvas>
   );
