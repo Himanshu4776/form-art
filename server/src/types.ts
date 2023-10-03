@@ -3,3 +3,11 @@ export interface Clients {
     roomCode: string;
     isHost: string;
 }
+
+export interface User {
+    id: string;
+    userName: string;
+    room: string;
+    host: string;
+    presenter: string;
+}

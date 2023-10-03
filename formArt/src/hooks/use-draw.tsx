@@ -18,20 +18,7 @@ export function useDraw(onDraw: ({context, currentPoint, previousPoint}: useDraw
     ctx.clearRect(0, 0, canvas.width, canvas.height)
   }
 
-  // const [locationValue, setLocationValue] = useState<CoOrdinates>({
-  //   x: 0,
-  //   y: 0,
-  // });
-
   useEffect(() => {
-    // function handleMouseOver(e: MouseEvent) {
-    //   console.log({ x: e.clientX, y: e.clientY });
-    //   setLocationValue({
-    //     x: e.clientX,
-    //     y: e.clientY,
-    //   });
-    // }
-
     const handler = (e: MouseEvent) => {
       if(!mouseDown) return;
       const currPoint = LocationInCanvas(e);
@@ -59,16 +46,14 @@ export function useDraw(onDraw: ({context, currentPoint, previousPoint}: useDraw
       prevPoint.current = null;
     }
 
-    // locationRef.current?.addEventListener("mousemove", handleMouseOver);
     locationRef.current?.addEventListener("mousemove", handler);
     window.addEventListener('mouseup', handleMouseUp)
 
     return () =>
       {
         locationRef.current?.removeEventListener("mousemove", handler);
-      window.removeEventListener('mouseup', handleMouseDown);
+        window.removeEventListener('mouseup', handleMouseDown);
       }
-      // locationRef.current?.addEventListener("mousemove", handleMouseOver);
   }, [onDraw]);
 
   return { locationRef, handleMouseDown, clear };

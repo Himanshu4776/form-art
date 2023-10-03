@@ -1,23 +1,21 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
+import { useCallback } from "react";
 import { useDraw } from "../hooks/use-draw";
 import { useDrawProps } from "../shared/types";
 import { useAtom } from "jotai";
-import { color } from "../shared/constants";
+import { color, lineWidth } from "../shared/constants";
 
 export function Draw() {
-  // const generator = rough.generator();
-  const [lineColor , setLineColor] = useAtom(color);
+  const [lineColor] = useAtom(color);
+  const [selectedLineWidth] = useAtom(lineWidth);
 
-  const { locationRef, handleMouseDown, clear } = useDraw(drawLine);
+  const { locationRef, handleMouseDown, clear } = useDraw(draw);
 
-  function drawLine({previousPoint, currentPoint, context}: useDrawProps) {
+  function draw({previousPoint, currentPoint, context}: useDrawProps) {
     const { x: currX, y: currY} = currentPoint;
-    const lineWidth = 5
 
     let startPoint = previousPoint ?? currentPoint;
     context.beginPath();
-    context.lineWidth = lineWidth;
+    context.lineWidth = selectedLineWidth;
     context.strokeStyle = lineColor;
     context.moveTo(startPoint?.x, startPoint?.y);
     context.lineTo(currX, currY);
@@ -28,55 +26,25 @@ export function Draw() {
     context.fill();
   }
 
-  // const { prevCoordinates } = useRectangle();
-  // const { currentCoordinates } = useRectangle();
-
-  // console.log(locationRef.current);
-
-  // useLayoutEffect(() => {
-  //   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-  //   const result = rough.canvas(canvas);
-
-  //   // const rectangle = generator.rectangle(100, 200, 100, 300);
-  //   // const circle = generator.circle(100, 200, 100);
-
-  //   // const rectangle = generator.line(
-  //   //   locationValue?.x,
-  //   //   locationValue?.x + 100,
-  //   //   locationValue?.y,
-  //   //   locationValue?.y + 300
-  //   // );
-
-  //   const dynamicRectangle = generator.line(
-  //     prevCoordinates.x,
-  //     prevCoordinates.y,
-  //     currentCoordinates.x,
-  //     currentCoordinates.y
-  //   );
-
-  //   console.log("dynamicRectangle", prevCoordinates, currentCoordinates);
-
-  //   result.draw(dynamicRectangle);
-
-  //   // result.draw(rectangle);
-  //   // result.draw(circle);
-  // });
-
   return (
-    <div className="w-screen h-screen bg-white flex-col flex justify-center items-center">
-      <canvas
-        id="canvas"
-        onMouseDown={handleMouseDown}
-        ref={locationRef}
-        width={window.innerWidth - 60}
-        height={window.innerHeight - 120}
-        className="border solid border-black rounded-md shadow-zinc-800 shadow-lg"
-      >
-        Canvas API
-      </canvas>
-      <div className=" p-10">
-      <button id="clear" type="button" onClick={clear}>clear All</button>
+      <div className="bg-yellow-300">
+        <div className="float-right flex flex-row space-x-4 pr-4 pb-1">
+          <button id="clear" type="button" className="bg-red-500 text-white p-2 rounded-md" onClick={clear}>clear All</button>
+          {/* <button id="server" type="button" className="bg-green-500 text-white p-2 rounded-md" onClick={handleClickSendMessage}>Client call</button> */}
+        </div>
+        {/* <div className="w-screen h-screen bg-white justify-center flex p-4"> */}
+        <div className="w-screen h-screen bg-white justify-center flex flex-row items-center">
+          <canvas
+            id="canvas"
+            onMouseDown={handleMouseDown}
+            ref={locationRef}
+            width={window.innerWidth - 60}
+            height={window.innerHeight - 120}
+            className="border solid border-black rounded-md shadow-zinc-800 shadow-lg"
+          >
+            Canvas API
+          </canvas>
+        </div>
       </div>
-    </div>
   );
 }
