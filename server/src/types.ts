@@ -11,3 +11,15 @@ export interface User {
     host: string;
     presenter: string;
 }
+
+export interface DrawLine {
+    currentPoint: CoOrdinates;
+    previousPoint: CoOrdinates | null;
+    lineColor: string;
+    selectedLineWidth: number;
+}
+
+export interface CoOrdinates {
+    x: number;
+    y: number;
+}
