@@ -9,6 +9,7 @@ import { io } from "socket.io-client";
 export function Draw() {
 
   const [socketUrl, setSocketUrl] = useState('ws://127.0.0.1:8000');
+  const [shareContent, setShareContent] = useState(false);
 
   const socket = io(socketUrl);
 
@@ -26,7 +27,7 @@ export function Draw() {
     }
 
     socket.on('draw', ({previousPoint, currentPoint, lineColor, selectedLineWidth}: DrawCurveProps) => {
-      console.log('recioeved', previousPoint, currentPoint, lineColor, context, selectedLineWidth);
+      // console.log('recioeved', previousPoint, currentPoint, lineColor, context, selectedLineWidth);
       drawCurve({previousPoint, currentPoint, lineColor, context, selectedLineWidth});
       
     })
@@ -37,25 +38,26 @@ export function Draw() {
   }, [locationRef])
 
   function createCurve({previousPoint, currentPoint, context}: useDrawProps) {
-    console.log('socket.active', socket.active);
-    
-    if(socket.active) {
-      if(previousPoint == null) {
-        previousPoint = currentPoint;
+    if(shareContent) {
+      if(socket.active) {
+        if(previousPoint == null) {
+          previousPoint = currentPoint;
+        }
+        socket.emit('draw', {previousPoint, currentPoint, lineColor, selectedLineWidth});
+        // console.log('sent value,', previousPoint, currentPoint, lineColor, selectedLineWidth);
       }
-      socket.emit('draw', {previousPoint, currentPoint, lineColor, selectedLineWidth});
-      console.log('sent value,', previousPoint, currentPoint, lineColor, selectedLineWidth);
-    }
-    else {
-      console.log('disconnected');
-      
-      socket.connect()
+      else {
+        console.log('disconnected');
+        socket.connect()
+      }
     }
     drawCurve({previousPoint, currentPoint, context, lineColor, selectedLineWidth});
   }
 
   function cleanWindow() {
-    socket.emit('clean');
+    if(shareContent) {
+      socket.emit('clean');
+    }
     clear();
   }
 
@@ -63,7 +65,10 @@ export function Draw() {
       <div className="bg-yellow-300">
         <div className="float-right flex flex-row space-x-4 pr-4 pb-1">
           <button id="clear" type="button" className="bg-red-500 text-white p-2 rounded-md" onClick={cleanWindow}>clear All</button>
-          {/* <button id="server" type="button" className="bg-green-500 text-white p-2 rounded-md" onClick={handleClickSendMessage}>Client call</button> */}
+          <button id="server" type="button" className="bg-green-500 text-white p-2 rounded-md" onClick={() => {
+            setSocketUrl(socketUrl + `/${socket.id}`)
+            setShareContent(true);
+          }}>Share art</button>
         </div>
         {/* <div className="w-screen h-screen bg-white justify-center flex p-4"> */}
         <div className="w-screen h-screen bg-white justify-center flex flex-row items-center">
