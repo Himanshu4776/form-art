@@ -1,4 +1,3 @@
-import React from 'react';
 import { Paintbrush, ArrowRight } from 'lucide-react';
 
 export function LandingPage() {

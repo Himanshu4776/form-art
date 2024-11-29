@@ -17,6 +17,7 @@ export interface DrawLine {
     previousPoint: CoOrdinates | null;
     lineColor: string;
     selectedLineWidth: number;
+    roomId: string;
 }
 
 export interface CoOrdinates {

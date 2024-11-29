@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CoOrdinates, useDrawProps } from "../shared/types";
 
-export function useDraw(onDraw: ({context, currentPoint, previousPoint}: useDrawProps) => void) {
+export function useDraw(onDraw: ({context, currentPoint, previousPoint, selectedLineWidth}: useDrawProps) => void) {
   const locationRef = useRef<HTMLCanvasElement>(null);
   const prevPoint = useRef<CoOrdinates | null> (null);
   const [mouseDown, setMouseDown] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export function useDraw(onDraw: ({context, currentPoint, previousPoint}: useDraw
 
       if (!context || !currPoint) return;
 
-      onDraw({context, currentPoint: currPoint, previousPoint: prevPoint.current});
+      onDraw({context, currentPoint: currPoint, previousPoint: prevPoint.current, selectedLineWidth: 2});
       prevPoint.current = currPoint;
     };
 

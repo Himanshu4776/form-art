@@ -11,8 +11,13 @@ const port = 8000;
 
 const io = new Server(server, {
   cors: {
-    origin: '*'
-  }
+    origin: "http://127.0.0.1:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  },
+  allowEIO3: true,
+  transports: ['polling', 'websocket']
 });
 
 server.listen(port, () => {
@@ -23,15 +28,22 @@ server.listen(port, () => {
 // let clients : Clients[];
 const clients: any = {};
 
-
 io.on('connection', (socket) => {
-  socket.on('draw', ({previousPoint, currentPoint, lineColor, selectedLineWidth}: DrawLine) => {
-    // console.log(count+1,previousPoint, currentPoint, lineColor, selectedLineWidth);
-    socket.broadcast.emit('draw', {previousPoint, currentPoint, lineColor, selectedLineWidth});
-  })
+  socket.on('join-room', ({ roomId, userName, isHost }) => {
+    socket.join(roomId);
+    console.log(`User ${userName} joined room ${roomId}`);
+  });
 
-  socket.on('clean', () => {
-    // console.log('clear window');
-    socket.broadcast.emit('clean');
-  })
-})
+  socket.on('draw', ({ previousPoint, currentPoint, lineColor, selectedLineWidth, roomId }) => {
+    
+    socket.to(roomId).emit('draw', { previousPoint, currentPoint, lineColor, selectedLineWidth, roomId });
+    console.log("draw, ", socket.to(roomId).emit('draw', { previousPoint, currentPoint, lineColor, selectedLineWidth, roomId }));
+  });
+
+  socket.on('clean', (roomId) => {
+    socket.to(roomId).emit('clean');
+  });
+});
+
+
+// })

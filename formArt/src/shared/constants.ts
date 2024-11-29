@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import { HEX } from "./types";
 
 export const Items = {
   PENCIL: "pencil",
@@ -29,7 +28,7 @@ export const LINE_WIDTHS = {
 
 export const color = atom(COLORS_PALETE.BLACK);
 export const element = atom(Items.PENCIL);
-export const lineWidth = atom(LINE_WIDTHS.SMALL);
+export const lineWidth = atom<number>(LINE_WIDTHS.SMALL);
 
 export const tool = atom<number>(0);
 // export const lineWidth = atom<number>(LINE_WIDTHS.SMALL);
