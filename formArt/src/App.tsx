@@ -1,13 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Home } from './Components/home';
+import {LandingPage} from './Components/page';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 function App() {
 
   return (
-    <>
-      <h1 className="text-3xl text-red-500">FormArt Draw App</h1>
-      <Home />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/draw" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 

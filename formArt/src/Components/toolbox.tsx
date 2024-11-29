@@ -9,10 +9,10 @@ export function ToolBox() {
   const [selectedLineWidth, setSelectedLineWidth] = useAtom(lineWidth);
 
   return (
-    <div className="bg-yellow-300 mt-2 pb-2">
+    <div className="bg-indigo-600 mt-2 pb-2">
       <div id="tool-item" className="flex flex-row items-center">
         <button
-          className={`px-2 py-1 text-black ${elementSelected === Items.PENCIL ? 'bg-gray-300' : ''}`}
+          className={`px-2 py-1 text-black ${elementSelected === Items.PENCIL ? 'bg-indigo-600 font-bold' : ''}`}
           id="pencil"
           onClick={() => setElementSelected(Items.PENCIL)}
         >

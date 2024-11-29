@@ -154,7 +154,7 @@ export function Draw() {
   };
 
   return (
-    <div className="bg-yellow-300">
+    <div className="bg-indigo-600">
       <div className="float-right flex flex-row space-x-4 pr-4 pb-1">
         <button id="clear" type="button" className="bg-red-500 text-white p-2 rounded-md" onClick={cleanWindow}>
           Clear All
