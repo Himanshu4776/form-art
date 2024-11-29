@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "routes": [
+    "rewrites": [
       { "src": "/draw", "dest": "/" },
       { "src": "/.*", "dest": "/" }
     ]
